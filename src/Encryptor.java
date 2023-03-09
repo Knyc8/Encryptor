@@ -121,29 +121,33 @@ public class Encryptor
      */
     public String decryptMessage(String encryptedMessage)
     {
-        String temp = encryptedMessage;
-        if (temp.length() < numRows * numCols)
-        {
-            for (int i = 0; i < numRows * numCols - temp.length(); i++)
-            {
-                temp += "A";
-            }
-        }
-
+        int arrayArea = numCols * numRows;
         String message = "";
-        int arrayArea = numRows*numCols;
-        for (int i = arrayArea; i <= temp.length(); i+=arrayArea)
+        for (int i = arrayArea; i <= encryptedMessage.length(); i+=arrayArea)
         {
-            fillBlock(encryptedMessage.substring(i-arrayArea, i));
-            message += encryptBlock();
+            String temp = encryptedMessage.substring(i-arrayArea, i);
+            String[][] decryptBlock = new String[numCols][numRows];
+            int indexOfStr = 0;
+            for (int row = 0; row < numCols; row++)
+            {
+                for (int col = 0; col < numRows; col++)
+                {
+                    decryptBlock[row][col] = "" + temp.substring(indexOfStr, indexOfStr+1);
+                    indexOfStr++;
+                }
+            }
+            for (int col = 0; col < decryptBlock[0].length; col++)
+            {
+                for (int row = 0; row < decryptBlock.length; row++)
+                {
+                    message += decryptBlock[row][col];
+                }
+            }
         }
 
-        for (int i = message.length()-1; i > 0; i--)
+        while(message.endsWith("A"))
         {
-            if (message.substring(i).equals("A"))
-            {
-                message = message.substring(i-1, i);
-            }
+            message = message.substring(0, message.length()-1);
         }
         return message;
     }
