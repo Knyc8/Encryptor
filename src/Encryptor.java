@@ -188,18 +188,55 @@ public class Encryptor
                 if (col == 0)
                 {
                     letterBlockColShift[row][col] = letterBlockRowShift[row][letterBlockRowShift[0].length-1];
+                    encryptedMessage += encryptBlock();
                 }
                 else
                 {
                     letterBlockColShift[row][col] = letterBlockRowShift[row][col+1];
+                    encryptedMessage += encryptBlock();
                 }
             }
         }
 
-        for (String[] row : letterBlockColShift)
-        {
-            encryptedMessage += encryptBlock();
-        }
         return encryptedMessage; }
 
+    public String superDecryptMessage(String encryptedMessage)
+    {
+        int arrayArea = numCols * numRows;
+        String message = "";
+        for (int i = arrayArea; i <= encryptedMessage.length(); i+=arrayArea)
+        {
+            String temp = encryptedMessage.substring(i-arrayArea, i);
+            String[][] decryptBlock = new String[numCols][numRows];
+            int indexOfStr = 0;
+            for (int row = 0; row < numCols; row++)
+            {
+                for (int col = 0; col < numRows; col++)
+                {
+                    decryptBlock[row][col] = "" + temp.substring(indexOfStr, indexOfStr + 1);
+                    indexOfStr++;
+                }
+            }
+            for (int col = 0; col < decryptBlock[0].length; col++)
+            {
+                for (int row = 0; row < decryptBlock.length; row++)
+                {
+                    message += decryptBlock[row][col];
+                }
+            }
+        }
+
+        char[] charList = new char[message.length()]; //turns the message into a list of characters and then shifts them back
+        for (int i = 0; i < charList.length; i++) {
+            charList[i] = (char) (message.charAt(i) - 1);
+        }
+        System.out.println(charList);
+        message = new String(charList);
+
+        while(message.endsWith("A"))
+        {
+            message = message.substring(0, message.length()-1);
+        }
+        return message;
+    }
 }
