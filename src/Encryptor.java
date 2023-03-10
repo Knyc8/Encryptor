@@ -151,4 +151,55 @@ public class Encryptor
         }
         return message;
     }
+
+    public String superEncryptMessage(String message)
+    { int arrayArea = numRows*numCols;
+        String temp = message;
+        if (message.length()%arrayArea != 0) {
+            for (int i = 0; i < arrayArea - message.length() % arrayArea; i++) {
+                temp += "A";
+            }
+        }
+
+        char[] charList = new char[temp.length()]; //turns the message into a list of characters and then shifts them by 1
+        for (int i = 0; i < charList.length; i++) {
+            charList[i] = (char) (temp.charAt(i) + 1);
+        }
+        String shifted = new String(charList);
+
+        String[][] letterBlockRowShift = new String[numRows][numCols];
+        String encryptedMessage = "";
+        for (int i = arrayArea; i <= shifted.length(); i+=arrayArea)
+        {
+            fillBlock(shifted.substring(i-arrayArea, i));
+        }
+
+        for (int i = 1; i < letterBlock.length; i++) //shifts the rows up by 1
+        {
+            letterBlockRowShift[i-1] = letterBlock[i];
+        }
+        letterBlockRowShift[letterBlockRowShift.length-1] = letterBlock[0];
+
+        String[][] letterBlockColShift = new String[numRows][numCols];
+        for (int row = 0; row < letterBlockRowShift.length; row++) //shifts the cols left by 1
+        {
+            for (int col = 0; col < letterBlockRowShift[0].length-1; col++)
+            {
+                if (col == 0)
+                {
+                    letterBlockColShift[row][col] = letterBlockRowShift[row][letterBlockRowShift[0].length-1];
+                }
+                else
+                {
+                    letterBlockColShift[row][col] = letterBlockRowShift[row][col+1];
+                }
+            }
+        }
+
+        for (String[] row : letterBlockColShift)
+        {
+            encryptedMessage += encryptBlock();
+        }
+        return encryptedMessage; }
+
 }

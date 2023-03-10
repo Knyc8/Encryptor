@@ -292,9 +292,9 @@ public class EncryptorTester
 
     //////////////
 
-        Encryptor encryptorTesterKenny = new Encryptor(6, 4);
-        String actualDecrypted8 = encryptorTesterKenny.decryptMessage("Pt    eifMDttooraoinr.s sesasth  rtsahbda vie rheAAAAArAAAAAeAAAAA:AAAAA");
-        System.out.println(actualDecrypted8);
+        Encryptor encryptorTesterKenny = new Encryptor(3, 8);
+        String actualEncrypted8 = encryptorTesterKenny.superEncryptMessage("I have no idea what write to at all. Please give me a hundred");
+        System.out.println(actualEncrypted8);
     }
 
     public static void print2DArray(String[][] arr)
