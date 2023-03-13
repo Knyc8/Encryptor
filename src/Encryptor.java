@@ -153,7 +153,8 @@ public class Encryptor
     }
 
     public String superEncryptMessage(String message)
-    { int arrayArea = numRows*numCols;
+    {
+        int arrayArea = numRows*numCols;
         String temp = message;
         if (message.length()%arrayArea != 0) {
             for (int i = 0; i < arrayArea - message.length() % arrayArea; i++) {
@@ -167,76 +168,23 @@ public class Encryptor
         }
         String shifted = new String(charList);
 
-        String[][] letterBlockRowShift = new String[numRows][numCols];
-        String encryptedMessage = "";
-        for (int i = arrayArea; i <= shifted.length(); i+=arrayArea)
-        {
-            fillBlock(shifted.substring(i-arrayArea, i));
-        }
-
-        for (int i = 1; i < letterBlock.length; i++) //shifts the rows up by 1
-        {
-            letterBlockRowShift[i-1] = letterBlock[i];
-        }
-        letterBlockRowShift[letterBlockRowShift.length-1] = letterBlock[0];
-
-        String[][] letterBlockColShift = new String[numRows][numCols];
-        for (int row = 0; row < letterBlockRowShift.length; row++) //shifts the cols left by 1
-        {
-            for (int col = 0; col < letterBlockRowShift[0].length-1; col++)
-            {
-                if (col == 0)
-                {
-                    letterBlockColShift[row][col] = letterBlockRowShift[row][letterBlockRowShift[0].length-1];
-                    encryptedMessage += encryptBlock();
-                }
-                else
-                {
-                    letterBlockColShift[row][col] = letterBlockRowShift[row][col+1];
-                    encryptedMessage += encryptBlock();
-                }
-            }
-        }
-
-        return encryptedMessage; }
+        return encryptMessage(shifted);
+    }
 
     public String superDecryptMessage(String encryptedMessage)
     {
-        int arrayArea = numCols * numRows;
-        String message = "";
-        for (int i = arrayArea; i <= encryptedMessage.length(); i+=arrayArea)
-        {
-            String temp = encryptedMessage.substring(i-arrayArea, i);
-            String[][] decryptBlock = new String[numCols][numRows];
-            int indexOfStr = 0;
-            for (int row = 0; row < numCols; row++)
-            {
-                for (int col = 0; col < numRows; col++)
-                {
-                    decryptBlock[row][col] = "" + temp.substring(indexOfStr, indexOfStr + 1);
-                    indexOfStr++;
-                }
-            }
-            for (int col = 0; col < decryptBlock[0].length; col++)
-            {
-                for (int row = 0; row < decryptBlock.length; row++)
-                {
-                    message += decryptBlock[row][col];
-                }
-            }
-        }
+        String message = decryptMessage(encryptedMessage);
 
-        char[] charList = new char[message.length()]; //turns the message into a list of characters and then shifts them back
+        char[] charList = new char[message.length()]; //turns the message into a list of characters and then shifts them by -1
         for (int i = 0; i < charList.length; i++) {
             charList[i] = (char) (message.charAt(i) - 1);
         }
-        System.out.println(charList);
-        message = new String(charList);
+        String unShifted = new String(charList);
 
-        while(message.endsWith("A"))
+        while(unShifted.endsWith("A"))
         {
-            message = message.substring(0, message.length()-1);
+            unShifted = unShifted.substring(0, unShifted.length()-1);
         }
-        return message;
+        return unShifted;
     }
 }

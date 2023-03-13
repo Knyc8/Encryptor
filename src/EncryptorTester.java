@@ -295,7 +295,7 @@ public class EncryptorTester
         Encryptor encryptorTesterKenny = new Encryptor(3, 8);
         String actualEncrypted8 = encryptorTesterKenny.superEncryptMessage("I have no idea what write to at all. Please give me a hundred");
         System.out.println(actualEncrypted8);
-        String actualDecrypted8 = encryptorTesterKenny.decryptMessage(actualEncrypted8);
+        String actualDecrypted8 = encryptorTesterKenny.superDecryptMessage("Jpi!!bijube!wfxfbs!!joxufbb!mtumfp/!!!hbQjumw!ff!oBneBfsB!fBbeB!BBiBBvBB");
         System.out.println(actualDecrypted8);
     }
 
